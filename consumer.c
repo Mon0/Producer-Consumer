@@ -24,15 +24,13 @@ void* thread(void* arg) {
 }
 
 int main(int argc, char** argv) {
-   index = sem_open("/index", O_CREAT | O_RDWR, 0644, 1);
-   lock = sem_open("/lock", O_CREAT | O_RDWR, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP, 1);
-   sem_post(index);
-   sem_post(lock);
-   pthread_t first;
-   pthread_create(&first, NULL, thread, NULL);
-   pthread_join(first, NULL)
+   index = sem_open("/index", O_RDWR);
+   lock = sem_open("/lock", O_RDWR);
+   pthread_t sec;
+   pthread_create(&sec, NULL, thread, NULL);
+   pthread_join(sec, NULL)
    
-   pthread_destroy(&first);
+   pthread_destroy(&sec);
    sem_destroy(&lock);
    sem_destroy(&index);
    
